@@ -10,11 +10,11 @@ not mainly for games.
 - Picked the **rg35xxh-debian13** port (Debian 13, mainline kernel 7.1.2, U-Boot 2026.01 with
   ROCKNIX H700 patches), built for the RG35XX **H** (sister board).
 - Claude Code: Debian 10+/Ubuntu 20.04+ on ARM64 are supported; 1 GB RAM is under the 4 GB spec.
-- Cloudflare WARP has arm64 trixie packages, but the user chose not to use WARP.
+- Cloudflare WARP has arm64 trixie packages, but I went with Tailscale instead.
 
 ## 2. Custom Debian image (didn't boot)
 
-Built in a Lima VM by chrooting into the image: user `grillermo`, keys from all machines,
+Built in a Lima VM by chrooting into the image: my user, SSH keys from my machines,
 key-only SSH, Claude Code, Tailscale, shell tools, `rg35xx.local`. Also disabled the H's
 `adc-joystick` DT node (Plus has no sticks) and set the Wi-Fi country to MX.
 
@@ -50,7 +50,7 @@ values didn't help. **Conclusion: mainline DRAM init doesn't work on this board 
 
 - Copied, read-only, the healthy card's first 36 MiB (boot0 + U-Boot) and its six OS partitions
   (12.4 GB) to files. The stock OS: Ubuntu 22.04, kernel 4.9.170 with TUN, ufw off,
-  NetworkManager with the user's Wi-Fi already saved, `Roms` mounted as vfat by `loadapp.sh`.
+  NetworkManager with my Wi-Fi already saved, `Roms` mounted as vfat by `loadapp.sh`.
 - The test card is 248.3 GB vs the stock 255.9 GB, so the OS partitions (which sit at the end of
   the stock card) had to move.
 - **Attempt 1 — sgdisk layout, OS partitions first, Roms last, flags 0: black screen.**
@@ -66,8 +66,9 @@ values didn't help. **Conclusion: mainline DRAM init doesn't work on this board 
   America/Mexico_City.
 - Added free disk space to the SSH welcome screen.
 
-## Leftovers
+## Where things ended up
 
-- `sudo tailscale up` and the first `claude` login are still to do (user).
-- The build VM and images (~58 GB) are on `/Volumes/externo 128GB/rg35/`; keep `build/stock/`
-  (12 GB) as the stock backup.
+- The build VM and images take ~58 GB in `$RG35/`. Keep `build/stock/` (12 GB): it's the backup of
+  the stock OS.
+- Tailscale login and the first `claude` login are done on the device after first boot (see
+  [connecting.md](connecting.md)).

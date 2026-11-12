@@ -2,9 +2,10 @@
 # Re-assemble with a stock-faithful GPT, reusing the customized partitions from /work/stock.img.
 set -euo pipefail
 SRC=/tmp/rg35-build/stock; OUT=/tmp/rg35-build/out
-CARD_BYTES=248302796800; SECTORS=$((CARD_BYTES/512))
+CARD_BYTES=${CARD_BYTES:-248302796800}  # your target card size in bytes
+SECTORS=$((CARD_BYTES/512))
 OLD=/work/stock.img; NEW=/work/stock2.img
-python3 /tmp/relayout.py $SRC/head-36M.bin $SECTORS /work/gpt-pri.bin /work/gpt-bak.bin
+python3 "$(dirname "$0")/relayout.py" $SRC/head-36M.bin $SECTORS /work/gpt-pri.bin /work/gpt-bak.bin
 P2NEW=$(python3 - <<EOF
 import struct; d=open("/work/gpt-pri.bin","rb").read(); print(struct.unpack("<Q", d[1024+128+32:1024+128+40])[0]//2048)
 EOF

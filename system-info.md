@@ -43,8 +43,8 @@ on this unit — see [limitations.md](limitations.md).
 
 ### What we added
 
-- User **`grillermo`** (zsh, groups sudo/netdev/audio/video/input/plugdev), **passwordless sudo**
-- The SSH public keys of the user's machines (`~/.ssh/authorized_keys`)
+- User **`grillermo`** (`$RG_USER` in the scripts) (zsh, groups sudo/netdev/audio/video/input/plugdev), **passwordless sudo**
+- The SSH public keys of my machines (`~/.ssh/authorized_keys`)
 - `/etc/ssh/sshd_config.d/10-rg35xx.conf`: `PermitRootLogin no`, `PasswordAuthentication no`
 - **Claude Code** from Anthropic's apt repo (stable channel), **Tailscale** from its jammy repo
 - git, tmux, mosh, zsh, htop, vim, ripgrep, rsync, jq, avahi-daemon + libnss-mdns

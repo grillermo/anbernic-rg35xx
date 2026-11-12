@@ -42,7 +42,7 @@ init (para1/para2, MR values, `tpr13`) against U-Boot's H616 LPDDR4 code.
 
 ## The SD card
 
-- The server card is **248.3 GB**, smaller than the stock card (255.9 GB). Partition offsets
+- My server card is **248.3 GB**, smaller than the stock card (255.9 GB). Partition offsets
   differ from stock — the GPT was cloned and shifted, not copied.
 - The clock had no NTP on stock (it booted at 2022-04-07 UTC). Fixed; but if NTP stops working,
   TLS, apt, Tailscale and Claude Code logins fail.

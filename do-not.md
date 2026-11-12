@@ -2,15 +2,13 @@
 
 ## Never
 
-- **Never write to the healthy stock card** (255.9 GB, stock layout: `Roms` + 6 OS partitions at
-  the end). It's the proof the device works and the only untouched copy. Reading it with
+- **Never write to the healthy stock card** (the one the device shipped with; stock layout: `Roms`
+  + 6 OS partitions at the end). It's the proof the device works and the only untouched copy. Reading it with
   `dd if=/dev/rdiskN of=<file>` is fine; anything with `of=/dev/...` is not.
 - **Never reuse an old `dd` command without re-checking the disk number.** The card reader's
   `/dev/diskN` changes on every insert (`disk4`, `disk8`, ...). Both cards have been `disk8`.
-  Guard writes by exact size:
-  ```bash
-  [ "$(diskutil info /dev/disk8 | grep -o '248302796800 Bytes')" = "248302796800 Bytes" ] && ...
-  ```
+  Guard writes by the target card's exact size, as in
+  [building-the-image.md](building-the-image.md#4-write-the-card-run-it-yourself-guarded-by-size).
 - **Never hold power 10 s expecting it to turn on** — that's forced power-off. Short press 2–3 s.
 
 ## Don't bother (already proven to fail on this unit)
@@ -20,7 +18,7 @@
   [limitations.md](limitations.md).
 - Swapping the bootloader for the DDR3 or DDR4 ROCKNIX U-Boot (the RAM is LPDDR4 anyway).
 - Rebuilding upstream U-Boot with the stock `TPR6/TPR11/TPR12` values — still hangs on DRAM.
-- Cloudflare WARP on the handheld (user decided against it; Tailscale instead).
+- Cloudflare WARP on the handheld: not tried, I used Tailscale instead.
 
 ## Partition table rules for the stock bootloader
 
@@ -42,9 +40,9 @@
 - Don't enable `ufw` without allowing SSH (22/tcp), mosh (60000–61000/udp) and mDNS (5353/udp).
 - Don't turn off `systemd-timesyncd`: the clock resets to 2022 without it.
 
-## On this Mac
+## On the Mac
 
 - Keep build files out of `/tmp` — macOS clears it on reboot. They live on
-  `/Volumes/externo 128GB/rg35/`.
+  `$RG35/`.
 - Don't symlink a Lima instance folder; use `LIMA_HOME`.
 - Don't connect the device through the dock for FEL; plug it straight into the Mac.

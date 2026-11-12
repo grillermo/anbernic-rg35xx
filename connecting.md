@@ -3,7 +3,7 @@
 ## SSH (normal use)
 
 ```bash
-ssh grillermo@rg35xx.local
+ssh <user>@rg35xx.local
 ```
 
 - Key-only. Root login and passwords are off. Works from any machine whose key is in
@@ -11,12 +11,12 @@ ssh grillermo@rg35xx.local
 - `rg35xx.local` is mDNS (Avahi). If it doesn't resolve, use the DHCP address your router
   gave it.
 - The welcome screen shows free disk space (System and Roms).
-- `mosh grillermo@rg35xx.local` also works (mosh is installed; ufw is off).
-- Non-interactive commands: `command ssh -o BatchMode=yes grillermo@rg35xx.local '<cmd>'`.
+- `mosh <user>@rg35xx.local` also works (mosh is installed; ufw is off).
+- Non-interactive commands: `command ssh -o BatchMode=yes <user>@rg35xx.local '<cmd>'`.
 
 ## Tailscale (away from home)
 
-Installed and running, **not yet logged in**. Once, on the device:
+The image ships it installed and running, **not logged in**. Once, on the device:
 
 ```bash
 sudo tailscale up
@@ -37,12 +37,12 @@ The stock launcher owns the screen. There's no Linux login on the LCD.
 ## SD cards
 
 - **TF1** (the slot the device boots from) holds the OS. **TF2** is extra storage.
-- On this Mac, card readers show up as `/dev/diskN`. The number changes every time a card is
+- On macOS, card readers show up as `/dev/diskN`. The number changes every time a card is
   inserted (it's been both `disk4` and `disk8`), so **check `diskutil list` by size every time**:
   - the server card (test card): **248.3 GB** (`248302796800` bytes)
   - the healthy stock card: **255.9 GB** — never write to it
 - macOS can't mount ext4; the FAT partitions (`ROMS`, `Volumn`) do mount.
-- Writing raw cards needs `sudo`, so the user runs those commands in their own terminal.
+- Writing raw cards needs `sudo`, so run those commands yourself in a terminal.
 
 ## USB-C / FEL (low-level recovery)
 
@@ -55,10 +55,10 @@ The H700 drops into **FEL** (USB recovery in the boot ROM) when it finds no boot
    `ioreg -p IOUSB -l -w0 | grep '"idVendor" = 7994'`
 
 Tool: `sunxi-fel`, built from source (no Homebrew formula) at
-`/Volumes/externo 128GB/rg35/tools/sunxi-fel` (needs `brew install libusb dtc pkgconf`).
+`$RG35/tools/sunxi-fel` (needs `brew install libusb dtc pkgconf`).
 
 ```bash
-F="/Volumes/externo 128GB/rg35/tools/sunxi-fel"
+F="$RG35/tools/sunxi-fel"
 "$F" ver                 # AWUSBFEX soc=00001823(H616)
 "$F" readl 0x00020000    # SRAM read, always safe
 "$F" spl <u-boot-sunxi-with-spl.bin>   # run SPL (DRAM init) and return to FEL
@@ -71,14 +71,14 @@ F="/Volumes/externo 128GB/rg35/tools/sunxi-fel"
 
 ## The build VM (Lima)
 
-A Debian 13 arm64 VM used to edit images (loop mounts, chroot). It lives on the external drive:
+A Debian 13 arm64 VM used to edit images (loop mounts, chroot). It lives in the build folder `$RG35`:
 
 ```bash
-export LIMA_HOME="/Volumes/externo 128GB/rg35/lima-home"
+export LIMA_HOME="$RG35/lima-home"
 limactl start rg35
 limactl shell rg35
 ```
 
-- `/Volumes/externo 128GB/rg35/build` is mounted **writable** at `/tmp/rg35-build` inside the VM.
+- `$RG35/build` is mounted **writable** at `/tmp/rg35-build` inside the VM.
 - Lima ignores instance folders that are symlinks — that's why it has its own `LIMA_HOME`.
 - Native arm64 on Apple Silicon: chrooting into the device's arm64 rootfs needs no emulation.

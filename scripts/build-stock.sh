@@ -1,5 +1,5 @@
 #!/bin/bash
-# Build a customized stock-Anbernic (Ubuntu 22.04) image for the 248.3 GB test card.
+# Build a customized stock-Anbernic (Ubuntu 22.04) image for a target card of CARD_BYTES bytes (default: my 248.3 GB card).
 # OS partitions move to the front (same partition numbers), Roms (p1) fills the rest.
 set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
@@ -8,7 +8,7 @@ apt-get -qq install -y gdisk dosfstools e2fsprogs gnupg curl >/dev/null
 SRC=/tmp/rg35-build/stock
 KEYS=/tmp/rg35-build/keys
 OUT=/tmp/rg35-build/out
-CARD_BYTES=248302796800
+CARD_BYTES=${CARD_BYTES:-248302796800}  # your target card size in bytes
 IMG=/work/stock.img
 USERNAME=${RG_USER:-grillermo}  # override: RG_USER=<name>
 HOST=rg35xx
